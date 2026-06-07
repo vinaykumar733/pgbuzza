@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Article {
+  id               String   @id @default(cuid())
+  originalUrl      String?
+  originalTitle    String?
+  originalContent  String?
+  aiTitle          String
+  aiContent        String
+  slug             String   @unique
+  metaTitle        String
+  metaDescription  String
+  city             String
+  area             String?
+  topic            String
+  category         String
+  featuredImageUrl String?
+  publishedAt      DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  status           String   @default("DRAFT") // DRAFT, PENDING_APPROVAL, PUBLISHED, REJECTED
+  tags             String   // JSON array string
+  faq              String?  // JSON string
+  schemaMarkup     String?  // JSON string
+  canonicalUrl     String
+  isDuplicate      Boolean  @default(false)
+  isBreaking       Boolean  @default(false)
+  isTrending       Boolean  @default(false)
+  isPinned         Boolean  @default(false)
+  scheduledAt      DateTime?
+}
+
+model ServiceRequest {
+  id              String   @id @default(cuid())
+  name            String
+  mobileNumber    String
+  email           String?
+  city            String
+  serviceRequired String
+  message         String?
+  documentUrl     String?
+  status          String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, REJECTED
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  type      String // image, document
+  size      Int    // in bytes
+  createdAt DateTime @default(now())
+}
+
+model ChintuLead {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  requirement String
+  createdAt DateTime @default(now())
+}
